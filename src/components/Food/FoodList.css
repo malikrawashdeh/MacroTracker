@@ -1,0 +1,14 @@
+.food-list {
+  list-style: none;
+  padding: 0;
+}
+.block {
+  color: white;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+.food-list__fallback {
+  color: white;
+  text-align: center;
+}
