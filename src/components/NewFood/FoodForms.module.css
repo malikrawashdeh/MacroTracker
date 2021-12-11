@@ -29,6 +29,3 @@
   border-color: red;
   background-color: #ffd7d7;
 }
-.new-food__controls.invalid label {
-  color: red;
-}

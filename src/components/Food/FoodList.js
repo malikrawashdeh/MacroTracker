@@ -2,6 +2,9 @@ import React from "react";
 import FoodItem from "./FoodItem";
 import "./FoodList.css";
 const FoodList = (props) => {
+  const deleteHandler = (key) => {
+    props.findKey(key);
+  };
   return (
     <ul className="food-list">
       {!props.items.length ? (
@@ -15,6 +18,7 @@ const FoodList = (props) => {
             carbs={foodList.carbs}
             fat={foodList.fat}
             calories={foodList.calories}
+            deleteItem={deleteHandler}
           />
         ))
       )}
