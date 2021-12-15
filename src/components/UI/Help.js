@@ -11,9 +11,10 @@ const Help = (props) => {
       <p>
         This food logger app that allows users to input and save a food item
         along with its macronutrient information to track food over their day.
-        This project was made using React, HTML, and CSS. For more information
+        This project was made using React, HTML, and CSS.
+        {/* For more information
         check out the readMe doc on{" "}
-        <a href="https://github.com/malikrawashdeh/MacroTracker">github</a>
+        <a href="https://github.com/malikrawashdeh/MacroTracker">github</a> */}
       </p>
       <h2>How to use:</h2>
       <h3>Adding a food Item</h3>
