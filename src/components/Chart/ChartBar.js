@@ -45,7 +45,11 @@ const ChartBar = (props) => {
       <Inner>
         <Fill style={{ height: barFillHeight }}></Fill>
       </Inner>
-      <Label>{props.label}</Label>
+      <Label>
+        {props.label}
+        <br />
+        {props.value}g
+      </Label>
     </Bar>
   );
 };
