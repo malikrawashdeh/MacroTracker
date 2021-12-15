@@ -9,9 +9,9 @@ const Help = (props) => {
     <Modal title={"Getting Started"} onConfirm={closeHandler}>
       <h2>Welcome to Malik's Food Logger Web App</h2>
       <p>
-        This food logger app that allows users to input and save a food item
-        along with its macronutrient information to track food over their day.
-        This project was made using React, HTML, and CSS.
+        This food logger app allows users to input and save a food item along
+        with its macronutrient information to track food over the day. This
+        project was made using React, HTML, and CSS.
         {/* For more information
         check out the readMe doc on{" "}
         <a href="https://github.com/malikrawashdeh/MacroTracker">github</a> */}
@@ -20,7 +20,7 @@ const Help = (props) => {
       <h3>Adding a food Item</h3>
       <p>
         Click "Add New Food" to begin entering food data. Enter in the food
-        data. If the food data is not entered correctly or not complete then an
+        data. If the food data is not entered correctly or incomplete then an
         error message will show.
       </p>
       <h3>Viewing Added Food Item</h3>
