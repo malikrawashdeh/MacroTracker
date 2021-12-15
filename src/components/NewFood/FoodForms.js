@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./FoodForms.module.css";
-
+import Button from "../UI/Button";
 const FoodForms = (props) => {
   // set state for user input
   const [enteredFood, setEnteredFood] = useState("");
@@ -138,10 +138,10 @@ const FoodForms = (props) => {
           </div>
 
           <div className={styles["button"]}>
-            <button type="button" onClick={props.onCancel}>
+            <Button type="button" onClick={props.onCancel}>
               Cancel
-            </button>
-            <button type="submit">Add Food</button>
+            </Button>
+            <Button type="submit">Add Food</Button>
           </div>
         </div>
       </form>

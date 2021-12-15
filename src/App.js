@@ -2,24 +2,63 @@ import React, { useState } from "react";
 import AddFood from "./components/NewFood/AddFood";
 import Food from "./components/Food/Food";
 import Modal from "./components/UI/Modal";
-import Chart from "./components/Chart/Chart";
+import styled from "styled-components";
 import MacroChart from "./components/Food/Macrochart";
+import Card from "./components/UI/Card";
+import Help from "./components/UI/Help";
+
+const Header = styled.div`
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  background-color: #a892ee;
+  width: 50rem;
+  padding: 1rem;
+  margin: 1rem auto;
+  color: white;
+
+  h1 {
+    text-align: right;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #4f005f;
+  }
+  button:hover,
+  button:active {
+    color: white;
+  }
+`;
+
 const Foods = [
   {
     id: Math.random().toString(),
     food: "Chicken",
     date: "March",
-    calories: 200,
-    protein: 200,
-    carbs: 200,
-    fat: 200,
+    calories: +200,
+    protein: +20,
+    carbs: +20,
+    fat: +20,
   },
 ];
 
 function App() {
   const [foodItems, setFood] = useState(Foods);
+  const [showHelp, setHelp] = useState(true);
   const [validInput, setValid] = useState(true);
   // const [validInput, setValid] = useState();
+
+  const helpHandler = () => {
+    setHelp(true);
+  };
+
   const addFoodHandler = (food) => {
     // use function format since relies on previes state
     setFood((prevFoods) => {
@@ -42,16 +81,20 @@ function App() {
   };
   if (!validInput) {
     showModal = (
-      <Modal
-        title={"Error: Invalid Input"}
-        message={"Please make sure to fill in all fields"}
-        onConfirm={errorHandler}
-      />
+      <Modal title={"Error: Invalid Input"} onConfirm={errorHandler}>
+        <p>Please make sure to fill in all fields</p>
+      </Modal>
     );
   }
 
   return (
     <div>
+      {showHelp && <Help close={() => setHelp(false)} />}
+      <Header>
+        <h1>Food Logger Web App</h1>
+        <button onClick={helpHandler}>?</button>
+      </Header>
+
       {showModal}
       <AddFood onAddFood={addFoodHandler} validity={setValidity} />
       <MacroChart foods={foodItems} />

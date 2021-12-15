@@ -25,6 +25,7 @@ const Fill = styled.div`
   background-color: #4826b9;
   width: 100%;
   transition: all 0.3s ease-out;
+  height: 50%;
 `;
 
 const Label = styled.div`

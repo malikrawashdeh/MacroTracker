@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 import Card from "./Card";
 import styles from "./Modal.module.css";
 
@@ -9,11 +10,9 @@ const Modal = (props) => {
         <header className={styles.header}>
           <h2>{props.title}</h2>
         </header>
-        <div className={styles.content}>
-          <p>{props.message}</p>
-        </div>
+        <div className={styles.content}>{props.children}</div>
         <footer className={styles.actions}>
-          <button onClick={props.onConfirm}>Okay</button>
+          <Button onClick={props.onConfirm}>Okay</Button>
         </footer>
       </Card>
     </div>

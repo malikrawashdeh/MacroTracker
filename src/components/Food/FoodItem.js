@@ -40,6 +40,9 @@ const Dropdown = styled.div`
     margin: 1rem 1rem;
     color: white;
   }
+  button {
+    margin-bottom: 0.5rem;
+  }
   @media (min-width: 768px) {
     flex-direction: row;
   } ;
