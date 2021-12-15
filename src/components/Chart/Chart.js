@@ -14,6 +14,7 @@ const BarChart = styled.div`
   text-align: center;
   display: flex;
   justify-content: space-around;
+  flex-direction: row;
   height: 10rem;
   .Cals {
     color: black;
@@ -32,6 +33,7 @@ const Chart = (props) => {
       <div className="Cals">
         <b>Total Calories:</b> {Cals.value}
       </div>
+
       {props.dataSet.map((datapoint) => (
         <ChartBar
           key={datapoint.label}

@@ -25,6 +25,11 @@
 .new-food__actions {
   text-align: right;
 }
+
+.button {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 .new-food__controls.invalid input {
   border-color: red;
   background-color: #ffd7d7;

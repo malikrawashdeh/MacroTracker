@@ -40,7 +40,7 @@ const FoodForms = (props) => {
     event.preventDefault();
     const foodData = {
       food: enteredFood,
-      date: new Date(enteredDate),
+      // date: new Date(enteredDate),
       calories: +enteredCalories,
       protein: +enteredProtein,
       carbs: +enteredCarbs,
@@ -48,7 +48,7 @@ const FoodForms = (props) => {
     };
     if (
       enteredFood.trim().length === 0 ||
-      enteredDate.trim().length === 0 ||
+      /*enteredDate.trim().length === 0 ||*/
       enteredCalories.trim().length === 0 ||
       enteredProtein.trim().length === 0 ||
       enteredCarbs.trim().length === 0 ||
@@ -60,7 +60,7 @@ const FoodForms = (props) => {
     }
     props.onSaveData(foodData);
     setEnteredFood("");
-    setEnteredDate("");
+    // setEnteredDate("");
     setEnteredCalories("");
     setEnteredProtein("");
     setEnteredCarbs("");
@@ -84,14 +84,14 @@ const FoodForms = (props) => {
             />
           </div>
 
-          <div className={styles["new-food__control"]}>
+          {/* <div className={styles["new-food__control"]}>
             <label>Date</label>
             <input
               type="date"
               onChange={dateChangeHandler}
               value={enteredDate}
             />
-          </div>
+          </div> */}
 
           <div className={styles["new-food__control"]}>
             <label>Calories</label>

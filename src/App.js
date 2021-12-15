@@ -11,15 +11,17 @@ const Header = styled.div`
   border-radius: 12px;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
   background-color: #a892ee;
   width: 50rem;
+  max-width: 95%;
   padding: 1rem;
   margin: 1rem auto;
   color: white;
 
   h1 {
-    text-align: right;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
@@ -35,13 +37,17 @@ const Header = styled.div`
   button:active {
     color: white;
   }
+  @media (min-width: 580px) {
+    flex-direction: row;
+    text-align: right;
+  } ;
 `;
 
 const Foods = [
   {
     id: Math.random().toString(),
     food: "Chicken",
-    date: "March",
+    // date: "March",
     calories: +200,
     protein: +20,
     carbs: +20,
