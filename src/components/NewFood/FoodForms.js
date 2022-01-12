@@ -1,87 +1,109 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./FoodForms.module.css";
 import Button from "../UI/Button";
+import useInput from "../../hooks/use-form";
+
 const FoodForms = (props) => {
-  // set state for user input
-  const [enteredFood, setEnteredFood] = useState("");
-  const [enteredDate, setEnteredDate] = useState("");
-  const [enteredCalories, setEnteredCalories] = useState("");
-  const [enteredProtein, setEnteredProtein] = useState("");
-  const [enteredCarbs, setEnteredCarbs] = useState("");
-  const [enteredFat, setEnteredFat] = useState("");
-  const [isValid, setIsValid] = useState(true);
-  // handler functions to add entered data to state variables
-  const foodChangeHandler = (event) => {
-    setEnteredFood(event.target.value);
-    event.target.value.trim().length > 0 && setIsValid(true);
-  };
-  const dateChangeHandler = (event) => {
-    event.target.value.trim().length > 0 && setIsValid(true);
-    setEnteredDate(event.target.value);
-  };
-  const caloriesChangeHandler = (event) => {
-    event.target.value.trim().length > 0 && setIsValid(true);
-    setEnteredCalories(event.target.value);
-  };
-  const proteinChangeHandler = (event) => {
-    event.target.value.trim().length > 0 && setIsValid(true);
-    setEnteredProtein(event.target.value);
-  };
-  const carbsChangeHandler = (event) => {
-    event.target.value.trim().length > 0 && setIsValid(true);
-    setEnteredCarbs(event.target.value);
-  };
-  const fatChangeHandler = (event) => {
-    event.target.value.trim().length > 0 && setIsValid(true);
-    setEnteredFat(event.target.value);
-  };
+  // use custom hook to manage validity and get valid values for entered food
+  // FOOD NAME
+  const {
+    inputValue: nameValue,
+    valueIsValid: nameValid,
+    hasError: nameError,
+    inputChangeHandler: nameChangeHandler,
+    inputBlurHandler: nameBlurHandler,
+    reset: nameReset,
+  } = useInput((name) => name.trim() !== "");
+
+  // CALORIES
+  const {
+    inputValue: calValue,
+    valueIsValid: calValid,
+    hasError: calError,
+    inputChangeHandler: calChangeHandler,
+    inputBlurHandler: calBlurHandler,
+    reset: calReset,
+  } = useInput((num) => num.trim() !== "" && !isNaN(num));
+
+  // PROTEIN
+  const {
+    inputValue: proteinValue,
+    valueIsValid: proteinValid,
+    hasError: proteinError,
+    inputChangeHandler: proteinChangeHandler,
+    inputBlurHandler: proteinBlurHandler,
+    reset: proteinReset,
+  } = useInput((num) => num.trim() !== "" && !isNaN(num));
+
+  // Carbs
+  const {
+    inputValue: carbValue,
+    valueIsValid: carbValid,
+    hasError: carbError,
+    inputChangeHandler: carbChangeHandler,
+    inputBlurHandler: carbBlurHandler,
+    reset: carbReset,
+  } = useInput((num) => num.trim() !== "" && !isNaN(num));
+
+  // Fat
+  const {
+    inputValue: fatValue,
+    valueIsValid: fatValid,
+    hasError: fatError,
+    inputChangeHandler: fatChangeHandler,
+    inputBlurHandler: fatBlurHandler,
+    reset: fatReset,
+  } = useInput((num) => num.trim() !== "" && !isNaN(num));
+
+  // overall form validation
+  let formValid = false;
+  formValid = nameValid && calValid && proteinValid && carbValid && fatValid;
+
   // function to save data to object when user submits
   const submitHandler = (event) => {
     event.preventDefault();
-    const foodData = {
-      food: enteredFood,
-      // date: new Date(enteredDate),
-      calories: +enteredCalories,
-      protein: +enteredProtein,
-      carbs: +enteredCarbs,
-      fat: +enteredFat,
-    };
-    if (
-      enteredFood.trim().length === 0 ||
-      /*enteredDate.trim().length === 0 ||*/
-      enteredCalories.trim().length === 0 ||
-      enteredProtein.trim().length === 0 ||
-      enteredCarbs.trim().length === 0 ||
-      enteredFat.trim().length === 0
-    ) {
-      setIsValid(false);
-      props.valid(false);
+
+    // test to see if form valid
+    if (!formValid) {
       return;
     }
+
+    // write data
+    const foodData = {
+      food: nameValue,
+      // date: new Date(enteredDate),
+      calories: +calValue,
+      protein: +proteinValue,
+      carbs: +carbValue,
+      fat: +fatValue,
+    };
+
     props.onSaveData(foodData);
-    setEnteredFood("");
+    nameReset();
     // setEnteredDate("");
-    setEnteredCalories("");
-    setEnteredProtein("");
-    setEnteredCarbs("");
-    setEnteredFat("");
+    calReset();
+    proteinReset();
+    carbReset();
+    fatReset();
   };
 
   return (
-    <div>
+    <React.Fragment>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${styles["new-food__controls"]} ${
-            !isValid && styles.invalid
-          }`}
-        >
-          <div className={styles["new-food__control"]}>
+        <div className={styles["new-food__controls"]}>
+          <div
+            className={`${styles["new-food__control"]} ${
+              nameError && styles.invalid
+            }`}
+          >
             <label>Food</label>
             <input
               type="text"
-              onChange={foodChangeHandler}
-              value={enteredFood}
+              onChange={nameChangeHandler}
+              onBlur={nameBlurHandler}
+              value={nameValue}
             />
+            {nameError && <p>Please enter valid name</p>}
           </div>
 
           {/* <div className={styles["new-food__control"]}>
@@ -93,59 +115,85 @@ const FoodForms = (props) => {
             />
           </div> */}
 
-          <div className={styles["new-food__control"]}>
+          <div
+            className={`${styles["new-food__control"]} ${
+              calError && styles.invalid
+            }`}
+          >
             <label>Calories</label>
             <input
               type="text"
-              min="0.01"
-              step="0.01"
-              onChange={caloriesChangeHandler}
-              value={enteredCalories}
+              min="0.00"
+              step="1.0"
+              onChange={calChangeHandler}
+              onBlur={calBlurHandler}
+              value={calValue}
             />
+            {calError && <p>Please enter valid calorie value</p>}
           </div>
 
-          <div className={styles["new-food__control"]}>
+          <div
+            className={`${styles["new-food__control"]} ${
+              proteinError && styles.invalid
+            }`}
+          >
             <label>Protein(g)</label>
             <input
               type="text"
-              min="0.01"
-              step="0.01"
+              min="0.00"
+              step="1.0"
               onChange={proteinChangeHandler}
-              value={enteredProtein}
+              onBlur={proteinBlurHandler}
+              value={proteinValue}
             />
+            {proteinError && <p>Please enter valid protein value</p>}
           </div>
 
-          <div className={styles["new-food__control"]}>
+          <div
+            className={`${styles["new-food__control"]} ${
+              carbError && styles.invalid
+            }`}
+          >
             <label>Carbs(g)</label>
             <input
               type="text"
-              min="0.01"
-              step="0.01"
-              onChange={carbsChangeHandler}
-              value={enteredCarbs}
+              min="0.00"
+              step="1.0"
+              onChange={carbChangeHandler}
+              onBlur={carbBlurHandler}
+              value={carbValue}
             />
+            {carbError && <p>Please enter valid carb value</p>}
           </div>
 
-          <div className={styles["new-food__control"]}>
+          <div
+            className={`${styles["new-food__control"]} ${
+              fatError && styles.invalid
+            }`}
+          >
             <label>Fat(g)</label>
             <input
               type="text"
-              min="0.01"
-              step="0.01"
+              min="0.00"
+              step="1.0"
               onChange={fatChangeHandler}
-              value={enteredFat}
+              onBlur={fatBlurHandler}
+              value={fatValue}
             />
+            {fatError && <p>Please enter valid fat value</p>}
           </div>
 
           <div className={styles["button"]}>
             <Button type="button" onClick={props.onCancel}>
               Cancel
             </Button>
-            <Button type="submit">Add Food</Button>
+            <Button disabled={!formValid} type="submit">
+              Add Food
+            </Button>
           </div>
         </div>
       </form>
-    </div>
+    </React.Fragment>
   );
 };
 

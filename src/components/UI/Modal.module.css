@@ -66,10 +66,21 @@
   justify-content: space-between;
 }
 .actions button {
-  font-size: 20px;
   padding: 0.5rem 2rem;
   margin-right: 0;
   margin-left: auto;
+  font: inherit;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  border-radius: 12px;
+  border: 1px solid #40005d;
+  background-color: #40005d;
+}
+.actions button:hover,
+.actions button:active {
+  background-color: #510674;
+  border-color: #510674;
 }
 
 @media (min-width: 768px) {

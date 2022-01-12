@@ -1,6 +1,7 @@
 .new-food__controls {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -22,6 +23,11 @@
   max-width: 100%;
 }
 
+.new-food__control p {
+  margin-top: 0.3em;
+  color: red;
+}
+
 .new-food__actions {
   text-align: right;
 }
@@ -30,7 +36,14 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
-.new-food__controls.invalid input {
+button:disabled,
+button:disabled:hover button:disabled:active {
+  background-color: #ccc;
+  color: #292929;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+.invalid input {
   border-color: red;
   background-color: #ffd7d7;
 }
