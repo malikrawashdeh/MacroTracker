@@ -1,47 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import FoodForms from "./FoodForms";
 import "./AddFood.css";
 import Button from "../UI/Button";
 import SearchFood from "./SearchFood";
 
-const AddFood = (props) => {
-  const [foodItems, setFood] = useState([]);
+const AddFood = ({ onAddFood }) => {
+  // const [foodItems, setFood] = useState([]);
   const [isCustomEditing, setIsCustomEditing] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
   // http update to firebase
-  const url =
-    "https://react-http2-1d82d-default-rtdb.firebaseio.com/foodList.json";
-  useEffect(async () => {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(foodItems),
-      });
-      console.log(response);
-      const data = await response.json();
-      const generatedId = data.name;
-    } catch (err) {
-      console.log(err);
-    }
-  }, [foodItems, url]);
 
   // component nav logic
   let isEditing = isCustomEditing || isSearching;
 
   const saveFoodHandler = (enteredFoodData) => {
     const foodData = { ...enteredFoodData, id: Math.random().toString() };
-    setFood((prevFood) => [foodData, ...prevFood]);
-    props.onAddFood(foodData);
+    // setFood((prevFood) => [foodData, ...prevFood]);
+    onAddFood(foodData);
     setIsCustomEditing(false);
   };
 
-  const saveSearch = (enteredFoodData) => {
-    const foodData = { ...enteredFoodData, id: Math.random().toString() };
-    props.onAddFood(foodData);
-    setIsSearching(false);
-  };
+  const saveSearch = useCallback(
+    (enteredFoodData) => {
+      const foodData = { ...enteredFoodData, id: Math.random().toString() };
+      onAddFood(foodData);
+      setIsSearching(false);
+    },
+    [onAddFood]
+  );
 
   const stopEditing = () => {
     setIsCustomEditing(false);

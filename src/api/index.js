@@ -1,29 +1,30 @@
 import axios from "axios";
-import { useCallback } from "react";
-// export const useHTTP = () => {
-//   const getRequest = useCallback(async (name, applyData) => {
-//     const options = {
-//       method: "GET",
-//       url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
-//       params: { ingr: name.toLowerCase() },
-//       headers: {
-//         "x-rapidapi-host": "edamam-food-and-grocery-database.p.rapidapi.com",
-//         "x-rapidapi-key": "92218ad753mshdd417b9519712bdp1032d7jsna3bc285e5004",
-//       },
-//     };
+import { useCallback, useState } from "react";
 
-//     try {
-//       const resp = await axios.request(options);
-//       const data = await resp.data;
-//       console.log(data);
-//       applyData(data);
-//     } catch (err) {
-//       console.log(err);
-//     }
+export const useHTTP = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const sendRequest = useCallback(async (requestConfig, applyData) => {
+    setIsLoading(true);
+    setError(null);
 
-//   }, []);
-//   return getRequest;
-// };
+    try {
+      const resp = await axios.request(requestConfig);
+      const data = await resp.data;
+      console.log(data);
+      applyData(data);
+    } catch (err) {
+      console.log(err.message || "Something went wrong");
+      setError(err);
+    }
+    setIsLoading(false);
+  }, []);
+  return {
+    isLoading,
+    error,
+    sendRequest,
+  };
+};
 
 export const getData = async (name) => {
   const options = {

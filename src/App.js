@@ -22,8 +22,6 @@ const Foods = [
 function App() {
   const [foodItems, setFood] = useState(Foods);
   const [showHelp, setHelp] = useState(true);
-  const [validInput, setValid] = useState(true);
-  // const [validInput, setValid] = useState();
 
   const helpHandler = () => {
     setHelp(true);

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import useInput from "../../hooks/use-form";
 import styles from "./FoodForms.module.css";
 import Button from "../UI/Button";
-import { getData } from "../../api";
-const SearchFood = (props) => {
+import { useHTTP } from "../../api";
+
+const SearchFood = ({ onSaveData, onCancel }) => {
+  //state to push food data to
+  const [food, setFood] = useState({});
   // form validation hook
   const {
     inputValue: nameValue,
@@ -14,36 +17,53 @@ const SearchFood = (props) => {
     reset: nameReset,
   } = useInput((name) => name.trim() !== "");
 
-  // food object to forward
-
+  // final submitted name to search api for
   const [finalName, setFinalName] = useState("");
 
+  //api call
+  const { isLoading, error, sendRequest: getFood } = useHTTP();
+
   useEffect(() => {
-    async function fetchData() {
-      if (finalName !== "") {
-        const {
-          cals: calories,
-          protein,
-          carbs,
-          fat,
-        } = await getData(finalName);
+    let isAPISubscribed = true;
+    // request config
+    const options = {
+      method: "GET",
+      url: "https://edamam-food-and-grocery-database.p.rapidapi.com/parser",
+      params: { ingr: finalName.toLowerCase() },
+      headers: {
+        "x-rapidapi-host": "edamam-food-and-grocery-database.p.rapidapi.com",
+        "x-rapidapi-key": "92218ad753mshdd417b9519712bdp1032d7jsna3bc285e5004",
+      },
+    };
 
-        const pushData = {
-          food: finalName.charAt(0).toUpperCase() + finalName.slice(1),
-          calories,
-          protein,
-          carbs,
-          fat,
-        };
-        console.log(pushData);
-        props.onSaveData(pushData);
-        setFinalName("");
-      }
+    const transformFood = (foodObj) => {
+      const foodData = foodObj.hints[0].food.nutrients;
+      console.log(foodData);
+      const pushData = {
+        food: finalName.charAt(0).toUpperCase() + finalName.slice(1),
+        calories: foodData.ENERC_KCAL,
+        protein: foodData.PROCNT,
+        carbs: foodData.CHOCDF,
+        fat: foodData.FAT,
+      };
+      setFood(pushData);
+
+      setFinalName("");
+    };
+    if (finalName !== "" && isAPISubscribed) {
+      getFood(options, transformFood);
     }
-    fetchData();
-  }, [finalName]);
+    return () => {
+      isAPISubscribed = false;
+    };
+  }, [finalName, getFood]);
 
-  // function to clean up data
+  useEffect(() => {
+    if (Object.keys(food).length !== 0) {
+      onSaveData(food);
+      setFood({});
+    }
+  }, [food, onSaveData]);
 
   let formValid = false;
   formValid = nameValid;
@@ -55,18 +75,6 @@ const SearchFood = (props) => {
       return;
     }
     setFinalName(nameValue);
-    // const { cals: calories, protein, carbs, fat } = await getData(nameValue);
-
-    // const pushData = {
-    //   food: nameValue,
-    //   calories,
-    //   protein,
-    //   carbs,
-    //   fat,
-    // };
-    // console.log(pushData);
-    // setFoodItem(pushData);
-    // props.onSaveData(pushData);
 
     nameReset();
   };
@@ -74,8 +82,8 @@ const SearchFood = (props) => {
   return (
     <React.Fragment>
       <form onSubmit={submitHandler}>
-        <div>
-          <div>
+        <div className={styles["new-food__controls"]}>
+          <div className={styles["new-food__control"]}>
             <label>Food Name Search</label>
             <input
               type="text"
@@ -84,9 +92,11 @@ const SearchFood = (props) => {
               value={nameValue}
             />
             {nameError && <p>Please enter valid name</p>}
+            {!error && isLoading && <p>loading...</p>}
+            {error && <p>Food Not Found!</p>}
           </div>
           <div className={styles["button"]}>
-            <Button type="button" onClick={props.onCancel}>
+            <Button type="button" onClick={onCancel}>
               Cancel
             </Button>
             <Button disabled={!formValid} type="submit">
