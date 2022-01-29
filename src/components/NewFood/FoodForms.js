@@ -64,7 +64,7 @@ const FoodForms = (props) => {
     event.preventDefault();
 
     // test to see if form valid
-    if (!formValid) {
+    if (formValid) {
       return;
     }
 
